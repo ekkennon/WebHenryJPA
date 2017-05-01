@@ -24,17 +24,17 @@
         <p>Branch Name: ${ store.storeName } </p>
         <p>Branch Location: ${ store.storeAddress } </p>
         <br/>
-        <p>Book Code: ${ book.bookid } </p>
-        <p>Book Title: ${ book.title } </p>
-        <p>Author: ${ book.author } </p>
+        <p>Book Code: ${ book.inv.bookid } </p>
+        <p>Book Title: ${ book.bl.title } </p>
+        <p>Author: ${ book.bl.author } </p>
         <br/>
         <form action="UpdateInventory" method="post">
-            <input name="onhand" id="onhand" placeholder="${ book.onhand }"/>
+            <input name="onhand" id="onhand" placeholder="${ book.inv.onhand }"/>
             <button name="ty">Submit</button>
             
         </form>
         <form action="UpdateInventory" method="post">
-            <input hidden id="onhand" name="onhand" value="${ book.onhand }"/>
+            <input hidden id="onhand" name="onhand" value="${ book.inv.onhand }"/>
             <button>Cancel</button>
         </form>
         <p>${ msg }</p>

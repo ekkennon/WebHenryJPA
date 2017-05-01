@@ -53,14 +53,18 @@ public class LogonServlet extends HttpServlet {
             User user = (User) request.getSession().getAttribute("user");
             if (user == null) {
                 userId = Integer.parseInt(request.getParameter("userid").trim());
-            }
-                
-            user = UserDB.getUserByID(userId);
-            if (user == null) {
-                msg = "No user record retrieved<br/>";
-            } else {
+                user = UserDB.getUserByID(userId);
                 int pwAttempt = Integer.parseInt(request.getParameter("password").trim());
                 user.setPwAttempt(pwAttempt);
+            }/* else {
+                userId = user.getUserid();
+            }
+                
+            
+            if (user == null) {
+                msg = "No user record retrieved<br/>";
+            } else {*/
+                
             
                 
                 
@@ -84,26 +88,26 @@ public class LogonServlet extends HttpServlet {
                     msg = "User not found in DB<br/>";
                 //}
             }*/
-                if (user.isAuthenticated()) {
-                    msg = "Welcome, " + user.getUsername() + "!<br/>";
-                    url = "/StoreSelection.jsp";
-                    request.getSession().setAttribute("user", user);
-                } else {
-                    msg = "unable to authenticate<br/>";
-                }
+            if (user.isAuthenticated()) {
+                msg = "Welcome, " + user.getUsername() + "!<br/>";
+                url = "/StoreSelection.jsp";
+                request.getSession().setAttribute("user", user);
+            } else {
+                msg = "unable to authenticate<br/>";
             }
+            //}
             
-            sql = "SELECT * FROM stores ORDER BY StoreName";
+            //sql = "SELECT * FROM stores ORDER BY StoreName";
             //ps = conn.prepareStatement(sql);
             //r = ps.executeQuery(sql);
 
             //while (r.next()) {
-                Store store = new Store();
+                //Store store = new Store();
                 //store.setStoreid(r.getInt("storeid"));
                 //store.setStoreName(r.getString("storename"));
                 //store.setStoreAddress(r.getString("storeaddr"));
                 //store.setNumEmployees(r.getInt("storeemp"));
-                stores = StoreDB.getStores();
+            stores = StoreDB.getStores();
             //}
             if (stores == null) {
                 msg = "No stores read from stores table<br/>";

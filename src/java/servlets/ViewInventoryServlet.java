@@ -2,11 +2,14 @@
 package servlets;
 
 import business.Book;
+import business.BookDB;
+import business.BookList;
 //import business.ConnectionPool;
 import business.Store;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,14 +42,15 @@ public class ViewInventoryServlet extends HttpServlet {
         //ConnectionPool pool = ConnectionPool.getInstance();
         //Connection conn = pool.getConnection();
         
-        String invsql = "SELECT onhand FROM bookinv WHERE storeID = '" + store.getStoreid() + "' and bookID = '" + bookid + "'";
-        String booksql = "SELECT * FROM booklist WHERE bookID = '" + bookid + "'";
+        //String invsql = "SELECT onhand FROM bookinv WHERE storeID = '" + store.getStoreid() + "' and bookID = '" + bookid + "'";
+        //String booksql = "SELECT * FROM booklist WHERE bookID = '" + bookid + "'";
         try {
             //ResultSet invr = conn.prepareStatement(invsql).executeQuery(invsql);
             //if (invr.next()) {
                 //book.setOnhand(invr.getInt("OnHand"));
             //}
-                
+            book = BookDB.getBookWithQuantity(bookid, store.getStoreid());
+            //book.
             //ResultSet bkr = conn.prepareStatement(booksql).executeQuery(booksql);
             //if (bkr.next()) {
                 //book.setTitle(bkr.getString("title"));

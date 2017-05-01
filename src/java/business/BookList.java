@@ -23,7 +23,7 @@ public class BookList {
     
     @Id
     @Column(name="bookID")
-    private int bookid;
+    private String bookid;
     
     @Column(name="title")
     private String title;
@@ -46,14 +46,14 @@ public class BookList {
     /**
      * @return the bookid
      */
-    public int getBookid() {
+    public String getBookid() {
         return bookid;
     }
 
     /**
      * @param bookid the bookid to set
      */
-    public void setBookid(int bookid) {
+    public void setBookid(String bookid) {
         this.bookid = bookid;
     }
 

@@ -7,6 +7,7 @@
 <%@page import="javax.swing.JOptionPane"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,22 +46,22 @@
                 </th>
             </tr>
             
-            <c:forEach var="bk" items="${ booklist }">
+            <c:forEach var="bk" items="${ books }">
                 <tr>
                     <td align="right">
-                        ${ bk.storeid }
+                        ${ bk.inv.storeid }
                     </td>
                     <td align="right">
-                        ${ bk.bookid }
+                        ${ bk.inv.bookid }
                     </td>
                     <td align="right">
-                        ${ bk.title }
+                        ${ bk.bl.title }
                     </td>
                     <td align="right">
-                        ${ bk.price }
+                        ${ bk.bl.price }
                     </td>
                     <td align="right">
-                        ${ bk.onhand }
+                        ${ bk.inv.onhand }
                     </td>
                 </tr>
             </c:forEach>

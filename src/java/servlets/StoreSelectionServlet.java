@@ -2,6 +2,9 @@
 package servlets;
 
 import business.Book;
+import business.BookDB;
+import business.BookInv;
+import business.BookList;
 //import business.ConnectionPool;
 import business.Store;
 import business.StoreDB;
@@ -9,11 +12,15 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,6 +44,7 @@ public class StoreSelectionServlet extends HttpServlet {
         ArrayList<Book> booklist = new ArrayList<>();
         String storeid = request.getParameter("storeid");
         Store store;// = new Store();
+        HashMap<BookInv,BookList> books = new HashMap<BookInv,BookList>();
         
         if (storeid == null) {
             store = (Store) request.getSession().getAttribute("store");
@@ -49,21 +57,42 @@ public class StoreSelectionServlet extends HttpServlet {
         try {
             //ConnectionPool pool = ConnectionPool.getInstance();
             //Connection conn = pool.getConnection();
+            List<BookInv> list = BookDB.getBooksByStore(Integer.parseInt(storeid));
             
-            String invsql = "SELECT * FROM bookinv WHERE storeID = '" + storeid + "'";
+            for (BookInv i : list) {
+                Book b = new Book();
+                b.setBl(BookDB.getBookByID(i.getBookid()));
+                b.setInv(i);
+                booklist.add(b);
+                /*
+                if (q == null) {
+                    //JOptionPane.showMessageDialog(null, "if");
+                    msg += "Error getting quantity for book " + b.getBookid() + " at store " + storeid + "</br>";
+                } else {
+                    //JOptionPane.showMessageDialog(null, "else");
+                    books.put(b, q);
+                }
+                */
+            }
+            
+            /*
+            for (Entry<BookInv,BookList> entry : books.entrySet()) {
+                
+            }*/
+            //String invsql = "SELECT * FROM bookinv WHERE storeID = '" + storeid + "'";
             //ResultSet invr = conn.prepareStatement(invsql).executeQuery(invsql);
             //while (invr.next()) {
-                Book book = new Book();
+                //Book book = new Book();
                 //book.setBookid(invr.getString("bookID"));
                 //book.setOnhand(invr.getInt("OnHand"));
                 //book.setStoreid(invr.getInt("storeID"));
-                String booksql = "SELECT * FROM booklist WHERE bookID = '" + book.getBookid() + "'";
+                //String booksql = "SELECT * FROM booklist WHERE bookID = '" + book.getBookid() + "'";
                 //ResultSet bkr = conn.prepareStatement(booksql).executeQuery(booksql);
                 //if (bkr.next()) {
                     //book.setTitle(bkr.getString("title"));
                     //book.setPrice(bkr.getDouble("price"));
                 //}
-                booklist.add(book);
+                //booklist.add(book);
             //}
             //String storesql = "SELECT * FROM stores where storeID = '" + storeid + "'";
             //ResultSet getStore = conn.prepareStatement(storesql).executeQuery(storesql);
@@ -76,9 +105,11 @@ public class StoreSelectionServlet extends HttpServlet {
         } catch (Exception e) {
             msg += "StoreSelection Error: " + e.getMessage() + "<br/>";
         }
+        
+        //JOptionPane.showMessageDialog(null, "books count = " + books.size());
         //request.getSession().setAttribute("store", store);
         request.setAttribute("msg", msg);
-        request.setAttribute("booklist", booklist);
+        request.setAttribute("books", booklist);
         RequestDispatcher disp = getServletContext().getRequestDispatcher(url);
         disp.forward(request,response);
     }

@@ -2,6 +2,8 @@
 package servlets;
 
 import business.Book;
+import business.BookDB;
+import business.BookInv;
 //import business.ConnectionPool;
 import business.Store;
 import java.io.IOException;
@@ -41,22 +43,24 @@ public class UpdateInventoryServlet extends HttpServlet {
             //ConnectionPool pool = ConnectionPool.getInstance();
             //Connection conn = pool.getConnection();
         
-            String sql = "UPDATE bookinv SET " +
-                        "onhand = ? " +
-                        "WHERE storeID = ? " +
-                        "and bookID = ?;";
+            //String sql = "UPDATE bookinv SET onhand = ? WHERE storeID = ? and bookID = ?;";
                 
             //PreparedStatement ps = conn.prepareStatement(sql);
                 
             //ps.setString(1, newOnHand);
             //ps.setString(2, Integer.toString(store.getStoreid()));
             //ps.setString(3, book.getBookid());
+            BookInv newBook = new BookInv();
+            newBook.setBookid(book.getInv().getBookid());
+            newBook.setStoreid(store.getStoreid());
+            newBook.setOnhand(Integer.parseInt(newOnHand));
+            newBook.setId(book.getInv().getId());
             
-            
+            msg += BookDB.updateOnHand(newBook);
             //int recordCount = ps.executeUpdate();
             
-            
-            /*switch (recordCount) {
+            /*
+            switch (recordCount) {
                 case 0:
                     msg += "Update failed - no changes<br/>";
                     break;
