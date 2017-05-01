@@ -1,17 +1,11 @@
 
 package servlets;
 
-//import business.ConnectionPool;
 import business.Store;
 import business.StoreDB;
 import business.User;
 import business.UserDB;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,11 +37,6 @@ public class LogonServlet extends HttpServlet {
         List<Store> stores;
         int userId = 0;
         Cookie uid;
-        String sql;
-        ResultSet r;
-        PreparedStatement ps;
-        //ConnectionPool pool = ConnectionPool.getInstance();
-        //Connection conn = pool.getConnection();
         
         try {
             User user = (User) request.getSession().getAttribute("user");
@@ -56,38 +45,8 @@ public class LogonServlet extends HttpServlet {
                 user = UserDB.getUserByID(userId);
                 int pwAttempt = Integer.parseInt(request.getParameter("password").trim());
                 user.setPwAttempt(pwAttempt);
-            }/* else {
-                userId = user.getUserid();
             }
-                
-            
-            if (user == null) {
-                msg = "No user record retrieved<br/>";
-            } else {*/
-                
-            
-                
-                
-                /*sql = "SELECT * FROM Users WHERE UserID = '" + userId + "'";
-                //ps = conn.prepareStatement(sql);
-                //r = ps.executeQuery(sql);
-                //if (r.next()) {
-                    user = new User();
-                    user.setUserid(userId);
-                    
-                    //user.setPassword(r.getInt("userPassword"));
-                    if (user.isAuthenticated()) {
-                        //user.setUsername(r.getString("userName"));
-                        //user.setStoreid(r.getInt("storeID"));
-                        //user.setAdminLevel(r.getString("adminLevel"));
-                    } else {
-                        msg = "Member failed to authenticate<br/>";
-                    }
-                    request.getSession().setAttribute("user", user);
-                //} else {
-                    msg = "User not found in DB<br/>";
-                //}
-            }*/
+  
             if (user.isAuthenticated()) {
                 msg = "Welcome, " + user.getUsername() + "!<br/>";
                 url = "/StoreSelection.jsp";
@@ -95,27 +54,15 @@ public class LogonServlet extends HttpServlet {
             } else {
                 msg = "unable to authenticate<br/>";
             }
-            //}
             
-            //sql = "SELECT * FROM stores ORDER BY StoreName";
-            //ps = conn.prepareStatement(sql);
-            //r = ps.executeQuery(sql);
-
-            //while (r.next()) {
-                //Store store = new Store();
-                //store.setStoreid(r.getInt("storeid"));
-                //store.setStoreName(r.getString("storename"));
-                //store.setStoreAddress(r.getString("storeaddr"));
-                //store.setNumEmployees(r.getInt("storeemp"));
             stores = StoreDB.getStores();
-            //}
+            
             if (stores == null) {
                 msg = "No stores read from stores table<br/>";
             } else {
                 request.getSession().setAttribute("stores", stores);
             }
-        //} catch (SQLException e) {
-            //msg = "SQL Exception: " + e.getMessage() + "<br/>";
+       
         } catch (NumberFormatException e) {
             msg = "Illegal userid or password: "  + e.getMessage() + "<br/>";
         }

@@ -4,11 +4,8 @@ package servlets;
 import business.Book;
 import business.BookDB;
 import business.BookInv;
-//import business.ConnectionPool;
 import business.Store;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,45 +31,21 @@ public class UpdateInventoryServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String url = "/Logon";
-        String newOnHand = request.getParameter("onhand").trim();
+        int newOnHand = Integer.parseInt(request.getParameter("onhand").trim());
         Store store = (Store) request.getSession().getAttribute("store");
         Book book = (Book) request.getSession().getAttribute("book");
         String msg = "";
         
         try {
-            //ConnectionPool pool = ConnectionPool.getInstance();
-            //Connection conn = pool.getConnection();
-        
-            //String sql = "UPDATE bookinv SET onhand = ? WHERE storeID = ? and bookID = ?;";
-                
-            //PreparedStatement ps = conn.prepareStatement(sql);
-                
-            //ps.setString(1, newOnHand);
-            //ps.setString(2, Integer.toString(store.getStoreid()));
-            //ps.setString(3, book.getBookid());
-            BookInv newBook = new BookInv();
-            newBook.setBookid(book.getInv().getBookid());
-            newBook.setStoreid(store.getStoreid());
-            newBook.setOnhand(Integer.parseInt(newOnHand));
-            newBook.setId(book.getInv().getId());
-            
-            msg += BookDB.updateOnHand(newBook);
-            //int recordCount = ps.executeUpdate();
-            
-            /*
-            switch (recordCount) {
-                case 0:
-                    msg += "Update failed - no changes<br/>";
-                    break;
-           
-                case 1:
-                    msg += "Book Updated!<br/>";
-                    break;
-            
-                default:
-                    msg += "fatal error: " + recordCount + " records were changed<br/>";
-                    break;
-            }*/
+            if (book.getInv().getOnhand() != newOnHand) {
+                BookInv newBook = new BookInv();
+                newBook.setBookid(book.getInv().getBookid());
+                newBook.setStoreid(store.getStoreid());
+                newBook.setOnhand(newOnHand);
+                newBook.setId(book.getInv().getId());
+
+                msg += BookDB.updateOnHand(newBook);
+            }
             
         } catch (Exception e) {
             msg += "Update Inv Error: " + e.getMessage() + "<br/>";

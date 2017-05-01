@@ -37,6 +37,6 @@
             <input hidden id="onhand" name="onhand" value="${ book.inv.onhand }"/>
             <button>Cancel</button>
         </form>
-        <p>${ msg }</p>
+        <p class="error">${msg}</p>
     </body>
 </html>

@@ -4,13 +4,17 @@
     Author     : ekk
 --%>
 
-<%@page import="javax.swing.JOptionPane"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            .error {
+                color: red;
+            }
+        </style>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inventory</title>
     </head>
@@ -21,7 +25,6 @@
         <c:if test="${user.adminLevel eq 'Admn'}">
             <form action="ViewInventory" method="post">
                 <input name="bookid" id="bookid" placeholder="Book Code"/>
-                <input hidden name="storeid" id="storeid" value="${ store.storeid }" />
                 <button>Edit Record</button>
             </form>
             <br/>

@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package business;
 
-import java.util.HashMap;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -15,12 +10,12 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author raefo
+ * @author ekk
  */
 public class BookDB {
     public static List<BookInv> getBooksByStore(int storeid) {
         EntityManager manager = DBUtil.getEmFactory().createEntityManager();
-        //BookInv book = null;
+        
         List<BookInv> list = null;
         try {
             String jpquery = "SELECT b FROM BookInv b WHERE b.storeid = :storeid";
@@ -60,7 +55,7 @@ public class BookDB {
     
     public static Book getBookWithQuantity(String bookid, int storeid) {
         EntityManager manager = DBUtil.getEmFactory().createEntityManager();
-        //HashMap<BookList,Integer> book = new HashMap<>();
+        
         Book book = new Book();
         try {
             book.setBl(getBookByID(bookid));
@@ -71,7 +66,7 @@ public class BookDB {
             quantityQuery.setParameter("bookid", bookid);
             
             book.setInv(quantityQuery.getSingleResult());
-            //book.put(bookQuery.getSingleResult(),quantityQuery.getSingleResult().getOnhand());
+            
         } catch (NoResultException e) {
             book = null;
         } finally {
@@ -81,7 +76,7 @@ public class BookDB {
     }
     
     public static String updateOnHand(BookInv book) {
-        //int quantity, String bookid, int storeid
+        
         String msg = "";
         EntityManager manager = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = manager.getTransaction();
@@ -89,14 +84,7 @@ public class BookDB {
             trans.begin();
             manager.merge(book);
             trans.commit();
-            /*
-            String jpquery = "UPDATE BookInv b SET b.onhand = :oh WHERE b.storeid = :st and b.bookid = :bk";
-            TypedQuery<BookInv> query = manager.createQuery(jpquery, BookInv.class);
-            query.setParameter("oh", quantity);
-            query.setParameter("bk", bookid);
-            query.setParameter("st", storeid);
-            count = query.executeUpdate();
-            */
+            
             msg = "Quantity Updated.</br>";
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
